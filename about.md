@@ -12,11 +12,12 @@ About me;
 Interests include;
   forensics using open-source Linux tools,
   securing linux systems especially Debian and Arch Linux,
-  ethical hacking
+  ethical hacking,
+  malware analysis with security onion
 
 ### More Information
 
-A place to include any other types of information that you'd like to include about yourself.
+
 
 ### Contact me
 
