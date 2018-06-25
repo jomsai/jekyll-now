@@ -5,13 +5,13 @@ permalink: /about/
 ---
 
 About me;
-  Mac user over 25 years
-  Linux user 3 years
+  Mac user over 25 years,
+  Linux user 3 years,
   Developing with Python and C
 
 Interests include;
-  forensics using open-source Linux tools
-  securing linux systems especially Debian and Arch Linux
+  forensics using open-source Linux tools,
+  securing linux systems especially Debian and Arch Linux,
   ethical hacking
 
 ### More Information
