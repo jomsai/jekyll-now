@@ -27,7 +27,7 @@ $ sudo apt-get install hdparm
 
 $ sudo apt-get update && sudo apt-get upgrade
 
-I recommend opening the man page for hdparm in the subshell to have as an easy reference and to copy and paste some very long commands coming up. Now we are ready to query the drive even though it is not mounted but still in the USB slot. The system can still see the device and with hdparm we can find out a lot about the drive and change settings as needed.
+I recommend opening the man page for hdparm in the shell window to have as an easy reference and to copy and paste some very long commands coming up. Now we are ready to query the drive even though it is not mounted but still in the USB slot. The system can still see the device and with hdparm we can find out a lot about the drive and change settings as needed. The option is capital -I (eye).
 
 $ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-1.txt
 
@@ -47,9 +47,9 @@ Now on to the hidden areas. I recommend removing the HPA (Host Protective Area) 
 
 $ sudo hdparm -N /dev/sdb
 
-The output will incude a fraction of current sector count divided by Max Sector Count. The numerator will be less that the Max Sector and we will disable to HPA so that we have the max sectors in our usable drive area. Use the following to calculate how much you can recover by disabling the HPA.
+The output will incude a fraction of current sector count divided by Max Sector Count. The numerator will be less that the Max Sector and that is what we will remedy by making them equal. We will disable to HPA so that we have the max sectors in our usable drive area. Use the following to calculate how much you can recover by disabling the HPA.
 
-$ echo $(((numerator - denominator) * 512))
+$ echo $(((denominator- numerator) * 512))
 
 To make the numerator equivalent to the denominaotr temporarily we run the following replacing <123456789> below with the denominator. We do this as a test before the permanent command which includes a p before the sector number. You may need to even include the "yes-i-know-what-i-am-doing" option. 
 
@@ -63,13 +63,19 @@ To see the final result repeat the following command. The output should now show
 
 $ sudo hdparm -N /dev/sdb
 
+$ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-2.txt
+
+Now comapre myssd-1.txt with myssd-2.txt to make sure the changes are as expected. The drive should be unlocked and unfrozen. The Max Sector size should be larger in file 2.
+
+I just kept going to the next step at this point because there are no partitions on the drive and rebooting and formatting the drive again just to check it would be a lot of trouble.
+
 The second hidden space we will consider is the DCO or Device Configuration Overlay used by manufacturers for extra features that come with the drive. To query the space on the SSD we will examine the output of hdparm -I again or grep the myssd-1.txt file for the Device Configuration Overlay status. An enabled DCO has an asterisk next to it. Also look for "Security not Locked not frozen". The drive needs to be unlocked and unfrozen to proceed.
 
 $ sudo hdparm -I /dev/sdb
 
 $ grep verlay myssd-1.txt
 
-Now see what features can be altered on the drive and how much space can be added to the SSD if the DCO is wiped. The size will be in terms of 512 byte sectors as before.
+Now see what features can be altered on the drive and how much space can be added to the SSD if the DCO is wiped. The size will be in terms of 512 byte sectors as before however I was unable to discover the sizes of the HPA versus the DCO. I suspect both commands give the same basic Max Sectors in spite of the fact that we just disabled the HPA beforehand.
 
 $ sudo hdparm --dco-identify /dev/sdb
 
@@ -83,13 +89,13 @@ $ sudo hdparm --yes-i-know-what-i-am-doing --dco-restore /dev/sdb
 
 Repeat the command to see what the reult is and write to a file so we can compare the baseline values with the current condition of the drive.
 
-$ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-2.txt
+$ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-3.txt
 
 Finally time to reboot and see if the drive will be seen by the system so we can write a partition table to the drive and partition it again.
 
-Nothing worked. I considered trashing the drive. I will try though to summarize what finally worked but I am unsure what really was the most important step. The drive was unusable for about 2 weeks and I tried various laptops with 3 different operating systems. Interestingly only the MacOS could see the drive but I could not partiton it. On linux the output of $ fdisk -l would just hang after my other usable drives. I then considered other tools and chose cfdisk. I wrote a partition table to it successfully then a FAT32 partition. Reboot. I tried this 2-3 times. At some point I ran hdparm again and checked parameters.
+Nothing worked. I considered trashing the drive. I will try though to summarize what finally worked but I am unsure what really was the most important step. The drive was unusable for about 2 weeks and I tried various laptops with 3 different operating systems. Interestingly only the MacOS could see the drive but I could not partiton it. On linux the output of $ fdisk -l would just hang after my other usable drives. I then considered other tools and chose cfdisk and it showed the drive when fdisk would not. I wrote a partition table to it successfully then a FAT32 partition. Reboot. I tried this 2-3 times. At some point I ran hdparm again and checked parameters.
 
-$ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-3.txt
+$ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-4.txt
 
 Then I performed the password set and secure erase as aboveagain.
 
