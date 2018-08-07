@@ -38,7 +38,9 @@ The output for hdparm is fairly lengthy so you may need to pipe the command to l
 Wiping the drive can be done with hdparm also and includes all hidden spaces. Even though I have already wiped the visible portion 0f the drive with dd I still opted to wipe it again with hdparm. The command below sets a user password to 123456. Then the second command uses that password to begin a long secure erase. Once this has been completed repeat the hdparm -I command and see the password has been removed. Make sure the drive is not frozen or locked again.
 
 $ sudo hdparm --user-master u --security-set-pass 123456 /dev/sdb
+
 $ sudo hdparm --user-master u --security-erase 123456 /dev/sdb
+
 $ sudo hdparm -I /dev/sdb
 
 Now on to the hidden areas. I recommend removing the HPA (Host Protective Area) which holds some manufacturer diagnostic tools and is used by the BIOS so that the drive is used correctly.
@@ -52,7 +54,9 @@ $ echo $(((numerator - denominator) * 512))
 To make the numerator equivalent to the denominaotr temporarily we run the following replacing <123456789> below with the denominator. We do this as a test before the permanent command which includes a p before the sector number. You may need to even include the "yes-i-know-what-i-am-doing" option. 
 
 $ sudo hdparm -N <123456789> /dev/sdb
+
 $ sudo hdparm -N p<123456789> /dev/sdb
+
 $ sudo hdparm --yes-i-know-what-i-am-doing -N p<123456789> /dev/sdb
 
 To see the final result repeat the following command. The output should now show a numerator equal to the denominator prior to the change.
@@ -62,6 +66,7 @@ $ sudo hdparm -N /dev/sdb
 The second hidden space we will consider is the DCO or Device Configuration Overlay used by manufacturers for extra features that come with the drive. To query the space on the SSD we will examine the output of hdparm -I again or grep the myssd-1.txt file for the Device Configuration Overlay status. An enabled DCO has an asterisk next to it. Also look for "Security not Locked not frozen". The drive needs to be unlocked and unfrozen to proceed.
 
 $ sudo hdparm -I /dev/sdb
+
 $ grep verlay myssd-1.txt
 
 Now see what features can be altered on the drive and how much space can be added to the SSD if the DCO is wiped. The size will be in terms of 512 byte sectors as before.
@@ -73,6 +78,7 @@ See the number of "Real max sectors:" and multiply by 512 bytes per sector. This
 Again we perform a none permanent DCO Restore to see how the drive reacts. Read all the warnings. Yes you can destroy the drive if you make this permanent so based on this ouput you decide if you want to risk it. Once you have made the decision perform the permanent command to restore the DCO drive area to your usable drive space with the second command that includes the claim you know what you are doing.
 
 $ sudo hdparm --dco-restore /dev/sdb
+
 $ sudo hdparm --yes-i-know-what-i-am-doing --dco-restore /dev/sdb
 
 Repeat the command to see what the reult is and write to a file so we can compare the baseline values with the current condition of the drive.
@@ -88,7 +94,9 @@ $ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-3.txt
 Then I performed the password set and secure erase as aboveagain.
 
 $ sudo hdparm --user-master u --security-set-pass 123456 /dev/sdb
+
 $ sudo hdparm --user-master u --security-erase 123456 /dev/sdb
+
 $ sudo hdparm -I /dev/sdb
 
 And then I used cfdisk again to partition the drive then all was good. I formatted the drive to exfat where I wanted it in the first place and everything worked. Now the 256GB SSD that had only 238GB of space had the full 256GB. Was this worth all the hassle? To me it was. I learned a lot. In the future I will reboot more often. I will set the password then unset it before and after each major step. I will also use cfdisk. I am unsure why that worked better than fdisk or even if it did but it seemed more in tune with the drive. I did not have any OS problems and that would be unfortunate if it happened but if you are worried about that then maybe starting your laptop with say Kali on a USB would be a better alternative.
