@@ -97,7 +97,7 @@ Nothing worked. I considered trashing the drive. I will try though to summarize 
 
 $ sudo hdparm -I /dev/sdb && sudo hdparm -I /dev/sdb > myssd-4.txt
 
-Then I performed the password set and secure erase as aboveagain.
+Then I performed the password set and secure erase as above again.
 
 $ sudo hdparm --user-master u --security-set-pass 123456 /dev/sdb
 
