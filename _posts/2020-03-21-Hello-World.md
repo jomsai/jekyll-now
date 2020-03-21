@@ -13,27 +13,37 @@ There is nothing special about using dd to wipe the drive. Many other tools are 
 
 $ sudo fdisk -l
 
-  	Drive designation=sdb.
-  	Drive capacity 238.49 GiB or 256060514304 bytes.
-  	Drive capacity 500118192 sectors.
+	Drive designation=sdb.
+	Drive capacity 238.49 GiB or 256060514304 bytes.
+	Drive capacity 500118192 sectors.
 
 Some quick calculations to confirm that these values align with what I see on the desktop which that the drive capacity is 238GB but above says I have over 238Gib.
 
-$ echo $((256060514304/(1024 * 1024 * 1024)))   ## Total Available Bytes divided by 1 GiB=238GiB
-$ echo $((256060514304/512))   ## Total Available Bytes divided by 512 bytes per sector=500118192 sectors
+$ echo $((256060514304/(1024 * 1024 * 1024)))
 
-The values are in Gibibytes. The box that came with the drive stated it was a 256GB one. If mount the drive on the desktop and right click on it and select"properties" or "Get Info" it shows it is 238GB.
+Shows Total Available Bytes divided by 1 GiB=238GiB
+
+$ echo $((256060514304/512))
+
+Shows Total Available Bytes divided by 512 bytes per sector=500118192 sectors
+
+The values are in Gibibytes. The box that came with the drive stated it was a 256GB one. If I mount the drive on the desktop and right click on it and select"properties" or "Get Info" it shows it is 238GB.
 
 If you divide total bytes by 1GB you do obtain 256GB already in use. 
 
-$ echo $((256060514304/(1000 * 1000 * 1000)))   ## Total Available Bytes divided by 1 GB=256GB
+$ echo $((256060514304/(1000 * 1000 * 1000)))   ## Total Avail. Bytes divided by 1GB=256GB
 
 This is what is on the box. Maybe I do not have hidden spaces.
 
 Alternatively how many bytes should there be on the drive for 256GiB?
 
-$ echo $((256 * (1024 * 1024 * 1024)))  ## Possible 274877906944 bytes using 1GiB
-$ echo $((256 * (1000 * 1000 * 1000)))  ## Possible 256060514304 bytes using 1GB
+$ echo $((256 * (1024 * 1024 * 1024)))
+
+Shows Possible 274877906944 bytes using 1GiB
+
+$ echo $((256 * (1000 * 1000 * 1000)))
+
+Shows Possible 256060514304 bytes using 1GB
 
 There are 274877906944 bytes possible but I only have 256060514304 bytes so really the box should say 256GiB drive. Therefore I do have some space to reclaim.
 
