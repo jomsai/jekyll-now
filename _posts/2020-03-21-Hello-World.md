@@ -13,9 +13,9 @@ There is nothing special about using dd to wipe the drive. Many other tools are 
 
 $ sudo fdisk -l
 
-	Drive designation=sdb.
-	Drive capacity 238.49 GiB or 256060514304 bytes.
-	Drive capacity 500118192 sectors.
+  	Drive designation=sdb.
+  	Drive capacity 238.49 GiB or 256060514304 bytes.
+  	Drive capacity 500118192 sectors.
 
 Some quick calculations to confirm that these values align with what I see on the desktop which that the drive capacity is 238GB but above says I have over 238Gib.
 
