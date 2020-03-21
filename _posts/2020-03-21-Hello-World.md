@@ -13,9 +13,9 @@ There is nothing special about using dd to wipe the drive. Many other tools are 
 
 $ sudo fdisk -l
 
-Drive designation=sdb.
-Drive capacity 238.49 GiB or 256060514304 bytes.
-Drive capapcity 500118192 sectors.
+	Drive designation=sdb.
+	Drive capacity 238.49 GiB or 256060514304 bytes.
+	Drive capacity 500118192 sectors.
 
 Some quick calculations to confirm that these values align with what I see on the desktop which that the drive capacity is 238GB but above says I have over 238Gib.
 
@@ -77,12 +77,12 @@ $ sudo hdparm --user-master u --security-erase 123456 /dev/sdb
 
 $ sudo hdparm -Iv /dev/sdb | tee myssd-2.txt
  	
-Security: 
-	Master password revision code = 65534
-		supported
-	not	enabled
-	not	locked
-	not	frozen
+	Security: 
+		Master password revision code = 65534
+			supported
+		not	enabled
+		not	locked
+		not	frozen
 
 The password has been removed as above by Security... "not enabled" now and the drive is not frozen or locked.
 
@@ -143,8 +143,8 @@ $ sudo hdparm -Iv /dev/sdb | tee myssd-4.txt
 
 Now compare myssd-1.txt with myssd-4.txt to make sure the changes are as expected.
 
-BEFORE:  *	Host Protected Area feature set
-AFTER:      Host Protected Area feature set
+	BEFORE:  *	Host Protected Area feature set
+	AFTER:      	Host Protected Area feature set
 
 The second hidden space we will consider is the DCO or Device Configuration Overlay used by manufacturers for extra features that come with the drive. To query the space on the SSD we will examine the output of hdparm -I again or grep the myssd-1.txt file for the Device Configuration Overlay status. An enabled DCO has an asterisk next to it. Also look for "Security not Locked not frozen". The drive needs to be unlocked and unfrozen to proceed.
 
@@ -154,7 +154,7 @@ The following should show the line showing Device Configuration Overlay informat
 
 $ grep verlay myssd-1.txt
 
-*	Device Configuration Overlay feature set
+	*	Device Configuration Overlay feature set
 
 Now see what features can be altered on the drive and how much space can be added to the SSD if the DCO is wiped with the --dco-identify option. The size will be in terms of 512 byte sectors as before however I was unable to discover the sizes of the HPA versus the DCO. I suspect both commands give the same basic Max Sectors in spite of the fact that we just disabled the HPA beforehand.
 
@@ -172,7 +172,7 @@ Repeat the hdparm -I command to see what the result is and write to a file so we
 
 $ sudo hdparm -Iv /dev/sdb | tee  myssd-5.txt
 
-RESULT: 	Device Configuration Overlay feature set. (No * so NOT SET)
+	RESULT: 	Device Configuration Overlay feature set. (No * so NOT SET)
 
 Success!
 
