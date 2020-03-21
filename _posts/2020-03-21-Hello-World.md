@@ -76,15 +76,13 @@ $ sudo hdparm --user-master u --security-set-pass 123456 /dev/sdb
 $ sudo hdparm --user-master u --security-erase 123456 /dev/sdb
 
 $ sudo hdparm -Iv /dev/sdb | tee myssd-2.txt
-
-...
+ 	
 Security: 
 	Master password revision code = 65534
 		supported
 	not	enabled
 	not	locked
 	not	frozen
-...
 
 The password has been removed as above by Security... "not enabled" now and the drive is not frozen or locked.
 
@@ -126,14 +124,14 @@ OPTIONAL.
 
 $ sudo hdparm --yes-i-know-what-i-am-doing -N p274877906944 /dev/sdb
 
-...
-/dev/sdb
-	setting max visible sectors to 274877906944
-...
-	max sectors = 256060514304/274877906944
-...
+		...
+	/dev/sdb
+		setting max visible sectors to 274877906944
+		...
+		max sectors = 256060514304/274877906944
+		...
 
-Don't be confused here. This says the drive has been changed to the larger byte count and calls it sectors. Then it says HPA is enabled. But we just disabled. We need to recycle the drive.
+Don't be confused here. This says the drive has been changed to the larger byte count and calls it sectors. Then it says HPA is enabled. But we just disabled it. We need to recycle the drive.
 
 To see the final result repeat the following command or commands. The output should now show that the sector values are equal.
 
@@ -145,16 +143,8 @@ $ sudo hdparm -Iv /dev/sdb | tee myssd-4.txt
 
 Now compare myssd-1.txt with myssd-4.txt to make sure the changes are as expected.
 
-BEFORE
-...
-   *	Host Protected Area feature set
-...
-
-
-AFTER
-...
-   		Host Protected Area feature set
-...
+BEFORE:  *	Host Protected Area feature set
+AFTER:      Host Protected Area feature set
 
 The second hidden space we will consider is the DCO or Device Configuration Overlay used by manufacturers for extra features that come with the drive. To query the space on the SSD we will examine the output of hdparm -I again or grep the myssd-1.txt file for the Device Configuration Overlay status. An enabled DCO has an asterisk next to it. Also look for "Security not Locked not frozen". The drive needs to be unlocked and unfrozen to proceed.
 
@@ -182,9 +172,7 @@ Repeat the hdparm -I command to see what the result is and write to a file so we
 
 $ sudo hdparm -Iv /dev/sdb | tee  myssd-5.txt
 
-...
-	Device Configuration Overlay feature set.
-...
+RESULT: 	Device Configuration Overlay feature set. (No * so NOT SET)
 
 Success!
 
