@@ -1,7 +1,9 @@
 ---
 layout: post
-title: Using hdparm To Get The Most Out Of Your USB Drives
+title: Using hdparm To Remove Hidden Spaces And Secure Erase An SSD
 ---
+
+DO NOT FOLLOW ANY ADVICE IN THIS ARTICLE. FOR EDUCATIONAL PURPOSES ONLY. SEE DISCLAIMER AT THE END!
 
 Recently I replaced an internal 256GB SSD drive inside my laptop for a new one terabyte SSD which really made that machine much more useful. I ordered a case for the old drive and plugged it in and saw that it had only 238 GB of available space. I just had to see if I could not take back some of that space and wipe all of the hidden spaces of any vendor settings or malware that may be on the drive. I have had some bad experiences doing this before but I was not ready to give up.
 
@@ -202,6 +204,11 @@ I performed the password set and secure erase as above again.
 
 And then I used cfdisk again to partition the drive again and all was good. I formatted the drive to exfat where I wanted it in the first place and everything worked. Now the SSD is mounted and shows the full 256GB capacity on the desktop.
 
-Was this worth all the hassle? To me it was. I learned a lot. In the future I will recycle more often. I will also use cfdisk. I am unsure why that worked better than fdisk or even if it did but it seemed more in tune with the drive. I did not have any OS problems and the drive works great.
+Was this worth all the hassle? To me it was. I learned a lot. In the future I will recycle more often in case running 2 commands requiring a recycle somehow corrupts the drive controller locking it up. I will also use cfdisk. I am unsure why that worked better than fdisk, or even if it did, but it seemed more in tune with the drive. I did not have any OS problems and the drive works great.
 
-DISCLAIMER: I am not responsible for any HD, SSD, OS failures you may have after using the commands above. Every manufacturer device is different and some set parameters to perform better on one OS or another. If the initial query does not show what you expect abandon making any changes.
+Finally, I rechecked the drive 1 year later. The first hdparm -I command shows that everything is turned on again meaning the enabled * is set for both DCO and HPA but the hdparm -N showed the HPA was disabled. An hdparm --dco-identify does not directly say DCO enabled or disabled but again the hdparm -I output shows enabled. I just hope the security-erase-enhanced worked.
+
+I purchased a new expensive 2TB SSD recently and the hdparm -I output shows empty values and no security information. I have been trying to look for software or a method to update firmware but there appears to be no updates for it. Some manufacturers may not come with all the bells and whistles or do not want you to access the drive.
+
+
+DISCLAIMER: I am not responsible for any HD, SSD, OS failures you may have after using the commands above. Every manufacturer device is different and some set parameters to perform better on one OS or another. If the initial query does not show what you expect abandon making any changes. Hdparm is for IDE/SATA hard drives anyway not SSD drives. For this I used a USB connection to my laptop but there is information that you must not do this and implies you need to connect the drive to your motherboard in the native pin connection as an internal drive. I did not do that.
